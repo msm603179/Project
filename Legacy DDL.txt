@@ -1,0 +1,283 @@
+--1. PC방 가맹점주
+CREATE TABLE PC_MANEGER(
+M_JOIN_DATE DATE,
+PC_NAME VARCHAR2(100) NOT NULL,
+PC_B_NUMBER VARCHAR2(10) NOT NULL PRIMARY KEY,
+M_NAME VARCHAR2(40) NOT NULL,
+M_ID VARCHAR2(15) NOT NULL,
+M_PW VARCHAR2(20) NOT NULL,
+M_BIRTHDAY CHAR(6) NOT NULL,
+M_PHONE VARCHAR2(30) NOT NULL,
+PC_ADDRESS VARCHAR2(2000) NOT NULL,
+M_EMAIL VARCHAR2(100),
+PC_ENROL CHAR(1)
+);
+
+
+--2. 일반 회원
+CREATE TABLE PC_USER(
+U_JOIN_DATE DATE,
+U_NAME VARCHAR2(40) NOT NULL,
+U_ID VARCHAR2(15) NOT NULL PRIMARY KEY,
+U_PW VARCHAR2(20) NOT NULL,
+U_BIRTHDAY CHAR(6) NOT NULL,
+U_PHONE VARCHAR2(12) NOT NULL,
+U_ADDR VARCHAR2(2000),
+U_EMAIL VARCHAR2(100)
+);
+
+
+--3. 게시판(pc방 후기)
+create table PC_board(
+rdate date,
+num number,
+content VARCHAR2(300),
+id varchar2(20),
+ref number);
+
+
+--4. 문의 게시판
+create table cu_board(
+num number,
+subject VARCHAR2(100),
+content VARCHAR2(200),
+u_id varchar2(20),
+writedate date,
+ref number,
+step number,
+bolevel number,
+readcount number);
+
+
+--5. 공지사항
+create table notice(
+writedate date,
+notice_num number,
+notice_subject varchar2(1000) not null,
+notice_content varchar2(4000) not null,
+ref number,
+readcount number
+);
+
+
+--6. 자주하는질문 테이블
+create table faq(
+faq_num number,
+faq_subject varchar2(1000) not null,
+faq_content varchar2(4000) not null,
+ref number
+);
+
+
+--7. 피시방 음식 사진
+create table PC_TABLE_FOOD(
+PC_NAME VARCHAR2(100) NOT NULL,
+PC_B_NUMBER VARCHAR2(10) NOT NULL ,
+PC_FOOD_CATEGORY VARCHAR2(50) NOT NULL,
+PC_FOOD_NAME VARCHAR2(50) NOT NULL,
+PC_FOOD_PRICE VARCHAR2(15) NOT NULL,
+PC_FOOD_PATH VARCHAR2(1000) NOT NULL
+);
+
+
+--8. 등록된 총 PC방 확인(지도마커 표기용)
+CREATE TABLE ENROL_PC(
+PC_NAME VARCHAR2(100) NOT NULL,
+PC_B_NUMBER VARCHAR2(10) NOT NULL PRIMARY KEY,
+PC_ADDRESS VARCHAR2(2000) NOT NULL,
+M_ID VARCHAR2(15) NOT NULL
+);
+
+
+--9. 피시방별 등록한 시간당 금액
+create table pc_time_set(
+pc_name varchar(500),
+pc_b_number varchar(10)  primary key,
+pc_time_text varchar(500) ,
+pc_time varchar(500) ,
+pc_time_price varchar(500) );
+
+
+--10. (테이블 생성금지  ->  pc방등록시 선택한 자리 수 만큼 테이블 자동생성) 자리 배치
+create table pc_'name'_table(
+pc_name varchar2(100) not null, 
+pc_b_number varchar2(10) not null primary key,
+numcol varchar2(10) not null, 
+numrow varchar2(10) not null, 
+checktable varchar2(2000) not null,
+t1_1 varchar2(200), 
+t1_2 varchar2(200), 
+t1_3 varchar2(200), 
+t1_4 varchar2(200)
+);
+
+
+--11 (테이블 생성금지  ->  pc방등록시 자동생성) 회원 시간, 아이디 저장
+create table 가_user_time(
+id varchar2(20),
+time varchar2(20)
+);
+
+--12. 피시방별 음식 사진 경로, 금액>>
+create table PC_TABLE_FOOD(
+PC_NAME VARCHAR2(100) NOT NULL,
+PC_B_NUMBER VARCHAR2(10) NOT NULL PRIMARY KEY ,
+PC_FOOD_CATEGORY VARCHAR2(50) NOT NULL,
+PC_FOOD_NAME VARCHAR2(50) NOT NULL,
+PC_FOOD_PRICE VARCHAR2(15) NOT NULL,
+PC_FOOD_PATH VARCHAR2(1000) NOT NULL
+);
+
+
+--13. (테이블 생성금지  ->  pc방등록시 자동생성) 매출 데이터 확인용
+create table pc_가_time(
+paydate date,
+name varchar2(50),
+time varchar2(20),
+price varchar2(20)
+);
+
+
+--14. 주소 검색
+CREATE TABLE ADDR_SEARCH(
+ZIPCODE CHAR(5),
+AREA1 CHAR(20),
+AREA2 VARCHAR(20),
+AREA3 CHAR(40)
+);
+
+
+--15. 홈페이지에 사용될 업로드된 이미지 경로
+create table imges(
+iden varchar2(400),
+img varchar2(400));
+
+
+
+---------------------------------------------
+--리뷰 시퀀스
+create SEQUENCE review_seq
+start with 1
+INCREMENT by 1
+MINVALUE 1
+NOCACHE;
+
+--문의게시판 시퀀스
+create SEQUENCE qa_seq
+start with 1
+INCREMENT by 1
+MINVALUE 1
+NOCACHE
+;
+
+--공지사항 시퀀스
+create SEQUENCE notice_seq
+start with 1
+INCREMENT by 1
+MINVALUE 1
+NOCACHE
+;
+
+--faq 시퀀스
+create SEQUENCE faq_seq
+start with 1
+INCREMENT by 1
+MINVALUE 1
+NOCACHE
+;
+
+
+
+
+------------------------------------------------------
+--인서트문
+
+insert into faq values(notice_seq.nextval, '회원 정보 입력', '<일반 회원> <br><br>
+성명, 아이디, 비밀번호, 생년월일, 연락처, 주소, 이메일을 입력합니다.<br><br>
+<가맹주 회원><br><br>
+피시방 이름, 가맹점 번호, 성명, 아이디, 비밀번호, 생년월일, 연락처, 주소, 이메일을 입력합니다.', 0);
+
+insert into faq values(notice_seq.nextval, '약관동의', '서비스 이용약관, 개인정보 이용 및 활용 동의서에 동의하고 등록을 누릅니다<br>
+자세한 내용은 Legacy 고객센터 (02-2199-3114)로 연락 주시기 바랍니다.', 1);
+
+insert into faq values(notice_seq.nextval, '정보가 변경되었습니다', '처음 회원가입 하셨을 때와 일부 정보가 변경이 되었을 시에는 아래와 같이 진행 부탁 드립니다.<br>
+- [우측 사이드바 > 클릭 정보수정]에서 변경된 정보 입력후 등록을 누르시면 변경이 가능합니다.', 2);
+
+insert into faq values(notice_seq.nextval, '시간 충전을 하려면 어떻게 해야하나요?', '아래의 방법을 통해 시간 충전할 수 있습니다<br><br>
+PC방 사이트 > 충전 > 충전 할 시간 클릭 > 결제', 3);
+
+insert into faq values(notice_seq.nextval, '결제 방법은 무엇이 있나요?', '[카드결제]<br><br>
+신용카드: 각 카드사에서 제공하는 결제 모듈(ISP 등) 방식으로 직접 카드번호를 입력하여 결제하는 시스템입니다. 
+상품이 모두 소진되기 전에 재구매가 필요합니다.<br><br>
+
+[카카오페이]<br><br>
+카카오톡 QR체크인 시 결제 내용이 카카오톡으로 발송하여 결제하는 시스템입니다.<br><br>', 4);
+
+
+insert into notice values(sysdate, notice_seq.nextval, '(완료) 2021년 5월 27일(목) Legacy 정기점검 안내', '안녕하세요, Legacy 입니다.<br><br>
+
+정기점검 시간 동안에는 홈페이지를 이용하실 수 없으며,<br>
+자세한 정기점검 시간 내용은 아래와 같습니다.<br><br>
+
+<정기점검 일정><br>
+1. 정기점검 날짜 : 2021년 5월 27일(목)<br>
+2. 정기점검 시간 : 오전 7시 30분 ~ 오전 10시 (2시간 30분)<br><br>
+
+안정적인 서비스 제공을 위해 서비스 정기점검을 진행하오니,<br>
+불편하시더라도 점검 시간을 피해 이용해 주시기를 부탁 드립니다.<br><br>
+
+이용에 불편을 드려 대단히 죄송합니다.<br>
+더욱 편리하고 안정적인 서비스 제공을 위해 노력하겠습니다.<br><br>
+
+감사합니다.' , 0, 0);
+
+insert into notice values(sysdate, notice_seq.nextval, '(정상화) 5/27 인터넷 회선장애로 인하여 고객센터 전화상담 불가 안내', '안녕하세요, Legacy입니다.<br><br>
+
+현재 고객센터가 위치한 지역의 일부에서 인터넷 회선 장애가 발생하여 전화 상담이 불가한 상태입니다.<br>
+
+1:1문의는 남겨주시면 인터넷 회선 연결이 복구 되는대로 빠른 시간 내에 답변드리도록 하겠습니다.<br>
+
+자세한 내용은 아래를 참고하시기 바랍니다.<br><br><br>
+
+장애시간 : 2021년 5월 27일(목) 오전 11:30 ~ 미정<br><br>
+
+장애영향 : 전화 상담 불가, 1:1문의는 장애 복구 이후 답변 가능<br><br>
+
+장애내용 : 인터넷 회선 장애 발생<br><br>
+
+고객센터 이용에 불편을 끼쳐 드려 대단히 죄송합니다.<br>
+
+감사합니다.', 1, 0);
+
+insert into notice values(sysdate, notice_seq.nextval, 'Legacy에서 pc방을 응원합니다.', '안녕하세요, Legacy입니다.<br><br>
+
+코로나19의 재확산으로 각 PC방에서 마주하고 계씰 어려움 또한 계속되고 계실 것으로 사료됩니다.<br>
+
+당사는 이 점 매우 안타깝게 생각하고 있습니다.<br>
+
+매일 마주하고 계신 어려움에 비하면 크지 않은 도움일 수 있겠으나, 조금이나마 위로와 응원이 되시길 진심으로 기원합니다.<br>
+
+아울러 PC방 사장님들 및 종사자분들의 건강 또한 항상 유념하시기 바랍니다. <br>
+
+앞으로도 더 좋은 서비스 제공을 위해 최선의 노력을 다하겠습니다.<br><br>
+
+감사합니다.', 2, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
